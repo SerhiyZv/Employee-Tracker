@@ -26,7 +26,7 @@ const questions = () => {
         name: 'questionList',
         type: 'list',
         message: 'What would ypu like to do?',
-        choices: ['View All Employees', 'Add An Employee', 'Update Employee Role', 'View All Roles', 'Add Role', 'View All Departments', 'Add Department']
+        choices: ['View All Employees', 'Add An Employee', 'Update Employee Role', 'View All Roles', 'Add Role', 'View All Departments', 'Add Department', 'Quit']
     }]).then((answer) => {
         // if(answer.questionList == 'View All Employees'){
             
@@ -72,7 +72,10 @@ const questions = () => {
                 addDepartment();
                 break;
 
-            default:
+            case 'Quit':
+                connection.end();
+
+                console.log("Session finished")
                 break;
         }
     });
@@ -99,14 +102,20 @@ const viewAllDepartments = () => {
     });
 };
 
-const init = async () => {
-    console.log('Welcome To The Employee Content Management system!');
-    try {
-        questions();
-    } catch (err) {
-        console.log(err);
-        console.log('The was an error with user input')
-    }
+const addDepartment = () => {
+    inquirer.prompt([
+        {
+            name: 'addDepartment',
+            type: 'input',
+            message: 'What is the name of the new deparment?'
+        }
+    ]).then((answer) => {
+        const sql = `INSERT INTO department (name) VALUES (?)`;
+        connection.query(sql, answer.addDepartment, (err, res) => {
+            viewAllDepartments();
+        });
+    });
 };
 
-init();
+
+
