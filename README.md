@@ -24,7 +24,7 @@ Clone the application from GitHub. From the command line change directory to whe
 
 ## Video
 
-[Video link](https://drive.google.com/drive/folders/1hOviDKg7WC71v-RauDrUGg7HQ8xNx5Yk) 
+[Video link](https://drive.google.com/file/d/1yyxmuwDMPKUhx5fJPrYc2BS2PzLJ-yFA/view?usp=sharing) 
 
 ## License
 
