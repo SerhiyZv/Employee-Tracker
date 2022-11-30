@@ -28,21 +28,7 @@ const questions = () => {
         message: 'What would ypu like to do?',
         choices: ['View All Employees', 'Add An Employee', 'Update Employee Role', 'View All Roles', 'Add Role', 'View All Departments', 'Add Department', 'Quit']
     }]).then((answer) => {
-        // if(answer.questionList == 'View All Employees'){
-            
-        // }else if (answer.questionList == 'Add An Employee'){
-
-        // }else if (answer.questionList == 'Update Employee role'){
-
-        // }else if (answer.questionList == 'View All Roles'){
-
-        // }else if (answer.questionList == 'Add Role'){
-
-        // }else if (answer.questionList == 'View All Departments'){
-
-        // }else if (answer.questionList == 'Add Department'){
-
-        // }
+       
         switch(answer.questionList){
             case 'View All Employees':
                 viewAllEmployee();
@@ -93,6 +79,54 @@ const viewAllEmployee = () => {
         questions();
     });
 };
+
+const updateEmployeeRole = () => {
+    const employees = [];
+    const roles = [];
+
+    connection.query(`SELECT * FROM employee`, (err, res) => {
+        res.forEach((employee) => {
+            employees.push ({
+                "value": employee.id,
+                "name": employee.first_name + " " + employee.last_name
+            });
+        });
+
+        connection.query(`SELECT * FROM role`, (err, res) => {
+            res.forEach((role) => {
+                roles.push ({
+                    "value": role.id,
+                    "name": role.title
+                });
+            });
+
+            inquirer.prompt([
+                {
+                    type: "list",
+                    name: "employee",
+                    message: "Select the Employee you would like to update their role for.",
+                    choices: employees,
+                },
+                {
+                    type: "list",
+                    name: "role",
+                    message: "What is the employee's role?",
+                    choices: roles,
+                }
+            ]).then((answer) => {
+                employees.forEach((employees) => {
+                    if (employees.value === answer.employee)
+                    {
+                        const sql = `UPDATE employee SET employee.role_id = ? WHERE employee.id =?`;
+                        connection.query(sql, [answer.role, answer.employee], (err, res) => {
+                            viewAllEmployee()
+                        });
+                    }
+                })
+            })
+        })
+    })
+}
 
 const viewAllRoles = () => {
     connection.query(`SELECT * FROM role;`, (err, res) => {
