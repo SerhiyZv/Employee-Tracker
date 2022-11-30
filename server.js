@@ -1,7 +1,9 @@
+// Install dependencies
 const mysql2 = require('mysql2');
 const inquirer = require('inquirer');
 const consoleTable = require('console.table');
 
+// Definition of connection to SQL Server
 const connection = mysql2.createConnection({
     host: 'localhost',
     port: 3306,
@@ -21,6 +23,7 @@ connection.connect((err) => {
     questions();
 });
 
+// Run inquirer for user selection
 const questions = () => {
     inquirer.prompt([{
         name: 'questionList',
@@ -67,6 +70,7 @@ const questions = () => {
     });
 }
 
+// View All Employees function is running query 
 const viewAllEmployee = () => {
     connection.query(`SELECT employee.id, employee.first_name AS 'First Name', employee.last_name AS 'Last Name', role.title AS 'Title', department.name AS 'Department',
     CONCAT('$', format(role.salary,0)) AS Salary, CONCAT(manager.first_name, ' ', manager.last_name) AS Manager
@@ -80,6 +84,7 @@ const viewAllEmployee = () => {
     });
 };
 
+// Add Role function with query to push data in to the DB
 const addRole = () => {
     const departments = [];
 
@@ -122,6 +127,7 @@ const addRole = () => {
     });
 }
 
+// Add an Employee function with Query to push data in the DB
 const addAnEmployee = () => {
     const roles = [];
     const managers = [];
@@ -175,6 +181,7 @@ const addAnEmployee = () => {
     });
 }
 
+// Update Employee Role function with Query to push data into the DB
 const updateEmployeeRole = () => {
     const employees = [];
     const roles = [];
@@ -223,6 +230,7 @@ const updateEmployeeRole = () => {
     })
 }
 
+// View  All Roles function with query to display all data from role table
 const viewAllRoles = () => {
     connection.query(`SELECT * FROM role;`, (err, res) => {
         console.table(res);
@@ -230,6 +238,7 @@ const viewAllRoles = () => {
     });
 };
 
+// View  All Roles function with query to display all data from department table
 const viewAllDepartments = () => {
     connection.query(`SELECT * FROM department;`, (err, res) => {
         console.table(res);
@@ -237,6 +246,7 @@ const viewAllDepartments = () => {
     });
 };
 
+// Add Department function with  query to push data to the DB
 const addDepartment = () => {
     inquirer.prompt([
         {
