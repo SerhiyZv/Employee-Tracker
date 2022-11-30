@@ -122,6 +122,59 @@ const addRole = () => {
     });
 }
 
+const addAnEmployee = () => {
+    const roles = [];
+    const managers = [];
+
+    connection.query(`SELECT * FROM role`, (err, res) => {
+        res.forEach((role) => {
+            roles.push ({
+                "value": role.id,
+                "name": role.title
+            });
+        });
+
+        connection.query(`SELECT * FROM employee`, (err, res) => {
+            res.forEach((employee) => {
+                managers.push ({
+                    "value": employee.id,
+                    "name": employee.first_name + " " + employee.last_name
+                });
+            });
+
+            inquirer.prompt([
+                {
+                    name: 'firstName',
+                    type: 'input',
+                    message: 'What is the employee\'s first name?',
+                },
+                {
+                    name: 'lastName',
+                    type: 'input',
+                    message: 'What is the employee\'s last name?',
+                },
+                {
+                    name: 'role',
+                    type: 'list',
+                    message: 'What is the employee\'s role?',
+                    choices: roles,
+                },
+                {
+                    name: 'manager',
+                    type: 'list',
+                    message: 'What is the employee\'s manager?',
+                    choices: managers,
+                }
+            ]).then((answer) => {
+                const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${answer.firstName}', '${answer.lastName}', ${parseInt(answer.role)}, ${parseInt(answer.manager)})`;
+                    connection.query(sql, (err, res) => {
+                        viewAllEmployee();
+                    });
+            });
+        });
+    });
+}
+
 const updateEmployeeRole = () => {
     const employees = [];
     const roles = [];
