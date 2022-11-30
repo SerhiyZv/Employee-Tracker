@@ -85,6 +85,13 @@ const viewAllEmployee = () => {
     });
 };
 
+const viewAllRoles = () => {
+    connection.query(`SELECT * FROM role;`, (err, res) => {
+        console.table(res);
+        questions();
+    });
+};
+
 const init = async () => {
     console.log('Welcome To The Employee Content Management system!');
     try {
