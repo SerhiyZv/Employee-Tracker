@@ -80,6 +80,48 @@ const viewAllEmployee = () => {
     });
 };
 
+const addRole = () => {
+    const departments = [];
+
+    connection.query(`SELECT * FROM department`, (err, res) => {
+        res.forEach((department) => {
+            departments.push ({
+                "value": department.id,
+                "name": department.name
+            });
+        });
+    });
+
+    inquirer.prompt([
+        {
+            name: 'roleTitle',
+            type: 'input',
+            message: 'What is the name of the role?',
+        },
+        {
+            name: 'roleSalary',
+            type: 'input',
+            message: 'What is the salary of the role?',
+        },
+        {
+            name: 'departmentId',
+            type: 'list',
+            message: 'Which department does the role belong to?',
+            choices: departments,
+        },
+    ]).then((answer) => {
+        departments.forEach((department) => {
+            if (department.value === answer.departmentId)
+            {
+                const sql = `INSERT INTO role (title,salary, department_id) VALUES ('${answer.roleTitle}', ${parseInt(answer.roleSalary)}, ${parseInt(answer.departmentId)})`;
+                connection.query(sql, (err, res) => {
+                    viewAllRoles();
+                });
+            }
+        });
+    });
+}
+
 const updateEmployeeRole = () => {
     const employees = [];
     const roles = [];
