@@ -224,10 +224,10 @@ const updateEmployeeRole = () => {
                             viewAllEmployee()
                         });
                     }
-                })
-            })
-        })
-    })
+                });
+            });
+        });
+    });
 }
 
 // View  All Roles function with query to display all data from role table
@@ -252,7 +252,7 @@ const addDepartment = () => {
         {
             name: 'addDepartment',
             type: 'input',
-            message: 'What is the name of the new deparment?'
+            message: 'What is the name of the new department?'
         }
     ]).then((answer) => {
         const sql = `INSERT INTO department (name) VALUES (?)`;
