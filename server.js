@@ -92,6 +92,13 @@ const viewAllRoles = () => {
     });
 };
 
+const viewAllDepartments = () => {
+    connection.query(`SELECT * FROM department;`, (err, res) => {
+        console.table(res);
+        questions();
+    });
+};
+
 const init = async () => {
     console.log('Welcome To The Employee Content Management system!');
     try {
