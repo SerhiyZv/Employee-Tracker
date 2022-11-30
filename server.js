@@ -82,11 +82,13 @@ const questions = () => {
 }
 
 const viewAllEmployee = () => {
-    connection.query(`SELECT employee.id, employee.first_name, employee.last_name, employee.manager_id, role.title, role.salary, department.name 
+    connection.query(`SELECT employee.id, employee.first_name AS 'First Name', employee.last_name AS 'Last Name', role.title AS 'Title', department.name AS 'Department',
+    CONCAT('$', format(role.salary,0)) AS Salary, CONCAT(manager.first_name, ' ', manager.last_name) AS Manager
     FROM employee
     INNER JOIN role ON employee.role_id = role.id
     INNER JOIN department ON role.department_id = department.id 
-    ORDER BY employee.id;`, (err, res) => {
+    LEFT JOIN employee AS manager ON employee.manager_id = manager.id
+    ORDER BY employee.id ASC;`, (err, res) => {
         console.table(res);
         questions();
     });
